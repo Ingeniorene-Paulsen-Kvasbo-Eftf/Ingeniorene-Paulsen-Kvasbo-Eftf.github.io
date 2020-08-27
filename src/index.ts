@@ -1,8 +1,7 @@
 declare var Terminal: any;
-declare var ElizaBot: any;
 
 const terminal = new Terminal();
-const eliza = new ElizaBot();
+const eliza = new ElizaBot(false);
 
 window.onload = function () {
   // Init libs

@@ -1,5 +1,5 @@
 var terminal = new Terminal();
-var eliza = new ElizaBot();
+var eliza = new ElizaBot(false);
 window.onload = function () {
     var initial = eliza.getInitial();
     terminal.setTextColor("#ffffff");
