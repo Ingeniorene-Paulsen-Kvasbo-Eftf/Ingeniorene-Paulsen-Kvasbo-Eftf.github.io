@@ -1,6 +1,7 @@
 var terminal = new Terminal();
 var eliza = new ElizaBot(false);
 window.onload = function () {
+    initFormButton();
     var initial = eliza.getInitial();
     terminal.setTextColor("#ffffff");
     terminal.setWidth("100%");
@@ -23,4 +24,47 @@ function handleElizaReply(input) {
         terminal.clear();
         terminal.input(reply, handleElizaReply);
     }
+}
+function initFormButton() {
+    window.formbutton =
+        window.formbutton ||
+            function () {
+                (formbutton.q = formbutton.q || []).push(arguments);
+            };
+    formbutton("create", {
+        title: "Ta kontakt!",
+        styles: {
+            button: {
+                background: "rgb(183,174,165)",
+            },
+            title: {
+                background: "rgb(183,174,165)",
+                letterSpacing: "0.05em",
+                textTransform: "uppercase",
+            },
+        },
+        fields: [
+            {
+                name: "name",
+                type: "text",
+                label: "Navn",
+                required: true,
+            },
+            {
+                name: "email",
+                type: "email",
+                label: "Epost",
+                required: true,
+            },
+            {
+                name: "Melding",
+                type: "textarea",
+                required: true,
+            },
+            {
+                type: "submit",
+            },
+        ],
+        action: "https://formspree.io/xgengvpd",
+    });
 }

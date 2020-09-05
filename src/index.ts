@@ -1,10 +1,16 @@
 declare var Terminal: any;
+declare var formbutton: any;
+
+interface Window {
+  formbutton: any;
+}
 
 const terminal = new Terminal();
 const eliza = new ElizaBot(false);
 
 window.onload = function () {
   // Init libs
+  initFormButton();
 
   const initial = eliza.getInitial();
 
@@ -31,4 +37,48 @@ function handleElizaReply(input: string) {
     terminal.clear();
     terminal.input(reply, handleElizaReply);
   }
+}
+
+function initFormButton() {
+  window.formbutton =
+    window.formbutton ||
+    function () {
+      (formbutton.q = formbutton.q || []).push(arguments);
+    };
+  formbutton("create", {
+    title: "Ta kontakt!",
+    styles: {
+      button: {
+        background: "rgb(183,174,165)",
+      },
+      title: {
+        background: "rgb(183,174,165)",
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+      },
+    },
+    fields: [
+      {
+        name: "name",
+        type: "text",
+        label: "Navn",
+        required: true,
+      },
+      {
+        name: "email",
+        type: "email",
+        label: "Epost",
+        required: true,
+      },
+      {
+        name: "Melding",
+        type: "textarea",
+        required: true,
+      },
+      {
+        type: "submit",
+      },
+    ],
+    action: "https://formspree.io/xgengvpd",
+  });
 }
