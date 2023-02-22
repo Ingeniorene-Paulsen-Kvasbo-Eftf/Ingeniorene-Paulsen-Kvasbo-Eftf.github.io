@@ -15,7 +15,7 @@ window.onload = function () {
   const initial = eliza.getInitial();
 
   // Set up terminal
-  terminal.setTextColor("#ffffff");
+  terminal.setTextColor("#070141");
   terminal.setWidth("100%");
   terminal.setHeight("100%");
   terminal.setBackgroundColor("#00000000");

@@ -3,7 +3,7 @@ var eliza = new ElizaBot(false);
 window.onload = function () {
     initFormButton();
     var initial = eliza.getInitial();
-    terminal.setTextColor("#ffffff");
+    terminal.setTextColor("#070141");
     terminal.setWidth("100%");
     terminal.setHeight("100%");
     terminal.setBackgroundColor("#00000000");
