@@ -4,43 +4,72 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Eftf AS</title>
+
+    <script src="logo.js"></script>
+
     <style type="text/css">
-        * {
-            box-sizing: border-box;
+        html, body {
+          height: 100%;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
-
-        body {
-            font-family: sans-serif;
-            font-size: 2vh;
-            color: #111111;
-            background-color: #ffffff;
+        #grid {
             display: grid;
-            grid-template-columns: auto min(50vw, 50vh) auto;
-            grid-template-rows: auto min(50vw, 50vh) auto;
-            min-height: -webkit-fill-available;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        logo {
+            grid-template-columns: repeat(68, 1fr);
+            grid-template-rows: repeat(46, 1fr);
             grid-column: 2;
             grid-row: 2;
+            position: relative;
+            width: 340px; /* Adjust as needed */
+            height: 230px; /* Adjust as needed */
+        }
+        .grid-item {
+            position: absolute;
             width: 100%;
             height: 100%;
-            background-image: url('logo-2024.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+            background-color: black; /* Color of the squares */
         }
     </style>
 </head>
 
 <body>
-    <logo id="logo">
-
-    </logo>
+    <div id="grid"></div>
 </body>
 
+
+<script>
+  const grid = document.getElementById('grid');
+  logo.forEach(coord => {
+    const div = document.createElement('div');
+    div.className = 'grid-item';
+    div.style.gridRow = `${coord.y} / ${coord.y + 1}`;
+    div.style.gridColumn = `${coord.x} / ${coord.x + 1}`;
+    grid.appendChild(div);
+  });
+
+  // Wait for ten secons before startging the animation
+  setTimeout(() => {
+    animateElements();
+  }, 2000);
+
+  function animateElements() {
+    console.log('animateElements');
+    // Pick a random element with the grid-item class
+    const item = document.querySelector('.grid-item');
+    item.style.display = 'none';
+
+    const items = document.querySelectorAll('.grid-item');
+    // Get a random item
+    const randomIndex = Math.floor(Math.random() * items.length);
+    const randomItem = items[randomIndex];
+    randomItem.style.display = 'none';
+    // Wait for 100ms before calling the function again
+    setTimeout(() => {
+      animateElements();
+    }, 100);
+  }
+
+</script>
 </html>
