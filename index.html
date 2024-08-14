@@ -2,50 +2,65 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Eftf AS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eftf AS</title>
 
-    <script src="logo.js"></script>
+  <script src="logo.js"></script>
 
-    <style type="text/css">
-        html, body {
-          height: 100%;
-          margin: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        #grid {
-            display: grid;
-            grid-template-columns: repeat(68, 1fr);
-            grid-template-rows: repeat(46, 1fr);
-            grid-column: 2;
-            grid-row: 2;
-            position: relative;
-            width: 340px; /* Adjust as needed */
-            height: 230px; /* Adjust as needed */
-        }
-        .grid-item {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: black; /* Color of the squares */
-        }
-    </style>
+  <style type="text/css">
+    body {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 5px);
+      grid-template-rows: repeat(auto-fill, 5px);
+      gap: 0px;
+      margin: 0;
+      height: 100vh;
+    }
+
+    .logo-item,
+    .contact-item {
+      width: 100%;
+      height: 100%;
+      background-color: black;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="grid"></div>
 </body>
 
 
 <script>
-  const grid = document.getElementById('grid');
+
+  // Find the number of rows and columns in the grid
+  const dimensions = getGridDimensions();
+
+  // Define the logo placement
+  const maxX = Math.max(...logo.map(coord => coord.x));
+  const maxY = Math.max(...logo.map(coord => coord.y));
+  const origoX = Math.floor(dimensions.columns / 2) - Math.floor(maxX / 2);
+  const origoY = Math.floor((dimensions.rows - maxY) / 2);
+
+  const grid = document.body;
   logo.forEach(coord => {
     const div = document.createElement('div');
-    div.className = 'grid-item';
-    div.style.gridRow = `${coord.y} / ${coord.y + 1}`;
-    div.style.gridColumn = `${coord.x} / ${coord.x + 1}`;
+    div.className = 'logo-item';
+    div.style.gridRow = `${origoY + coord.y} / ${origoY + coord.y + 1}`;
+    div.style.gridColumn = `${origoX + coord.x} / ${origoX + coord.x + 1}`;
+    grid.appendChild(div);
+  });
+
+  // Define the contact icon
+  const maxEnvX = Math.max(...envelope.map(coord => coord.x));
+  const maxEnvY = Math.max(...envelope.map(coord => coord.y));
+  const origoEnvX = dimensions.columns - maxEnvX - 14;
+  const origoEnvY = dimensions.rows - maxEnvY - 4;
+
+  envelope.forEach(coord => {
+    const div = document.createElement('div');
+    div.className = 'contact-item';
+    div.style.gridRow = `${origoEnvY + coord.y} / ${origoEnvY + coord.y + 1}`;
+    div.style.gridColumn = `${origoEnvX + coord.x + 10} / ${origoEnvX + coord.x + 11}`;
     grid.appendChild(div);
   });
 
@@ -54,13 +69,8 @@
     animateElements();
   }, 2000);
 
-  function animateElements() {
-    console.log('animateElements');
-    // Pick a random element with the grid-item class
-    const item = document.querySelector('.grid-item');
-    item.style.display = 'none';
-
-    const items = document.querySelectorAll('.grid-item');
+  function animateElements() {
+    const items = document.querySelectorAll('.logo-item');
     // Get a random item
     const randomIndex = Math.floor(Math.random() * items.length);
     const randomItem = items[randomIndex];
@@ -71,5 +81,21 @@
     }, 100);
   }
 
+  function getGridDimensions() {
+    // Assuming each grid cell is 10px by 10px
+    const gridSize = 5;
+
+    // Get the width and height of the viewport
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate the number of columns and rows
+    const columns = Math.floor(viewportWidth / gridSize);
+    const rows = Math.floor(viewportHeight / gridSize);
+
+    return { rows, columns };
+  }
+
 </script>
+
 </html>

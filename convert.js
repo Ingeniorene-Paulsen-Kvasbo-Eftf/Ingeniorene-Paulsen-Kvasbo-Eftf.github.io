@@ -17,7 +17,6 @@ gs.forEach(g => {
       x: parseInt(gg.rect._x) + x,
       y: parseInt(gg.rect._y) + y,
     }
-    console.log(pixel);
     out.push(pixel);
   });
 });
