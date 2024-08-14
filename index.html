@@ -17,18 +17,20 @@
       height: 100vh;
     }
 
-    .logo-item,
-    .contact-item {
+    .grid-item {
+      background-color: black;
       width: 100%;
       height: 100%;
-      background-color: black;
+    }
+
+    .contact-item {
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
 </body>
-
 
 <script>
 
@@ -44,7 +46,7 @@
   const grid = document.body;
   logo.forEach(coord => {
     const div = document.createElement('div');
-    div.className = 'logo-item';
+    div.className = 'grid-item logo-item';
     div.style.gridRow = `${origoY + coord.y} / ${origoY + coord.y + 1}`;
     div.style.gridColumn = `${origoX + coord.x} / ${origoX + coord.x + 1}`;
     grid.appendChild(div);
@@ -56,9 +58,20 @@
   const origoEnvX = dimensions.columns - maxEnvX - 14;
   const origoEnvY = dimensions.rows - maxEnvY - 4;
 
+  // Make the full envelope clickable by adding classes to the elements
+  for (let i = 0; i < maxEnvY; i++) {
+    for (let j = 0; j < maxEnvX; j++) {
+      const div = document.createElement('div');
+      div.className = 'contact-item';
+      div.style.gridRow = `${origoEnvY + i} / ${origoEnvY + i + 1}`;
+      div.style.gridColumn = `${origoEnvX + 10 + j} / ${origoEnvX + 10 + j + 1}`;
+      grid.appendChild(div);
+    }
+  }
+
   envelope.forEach(coord => {
     const div = document.createElement('div');
-    div.className = 'contact-item';
+    div.className = 'grid-item contact-item';
     div.style.gridRow = `${origoEnvY + coord.y} / ${origoEnvY + coord.y + 1}`;
     div.style.gridColumn = `${origoEnvX + coord.x + 10} / ${origoEnvX + coord.x + 11}`;
     grid.appendChild(div);
@@ -95,6 +108,16 @@
 
     return { rows, columns };
   }
+
+  // Select all elements with the class 'contact-item'
+  const contactItems = document.querySelectorAll('.contact-item');
+
+  // Loop through each element and add the event listener
+  contactItems.forEach(contactItem => {
+    contactItem.addEventListener('click', () => {
+      window.location.href = 'mailto:post@eftf.no';
+    });
+  });
 
 </script>
 
