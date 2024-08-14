@@ -7,6 +7,20 @@
 
   <script src="logo.js"></script>
 
+  <script>
+    const colorsLight =
+      [
+        { "name": "Sandy Beige", "hex": "#F5DEB3" },
+        { "name": "Soft Clay", "hex": "#D2B48C" },
+        { "name": "Pale Olive", "hex": "#C2B280" },
+        { "name": "Light Taupe", "hex": "#B4A28B" },
+        { "name": "Muted Moss", "hex": "#A8B798" },
+        { "name": "Warm Stone", "hex": "#C3B091" },
+        { "name": "Dusty Rose", "hex": "#D9A99B" },
+        { "name": "Pale Terracotta", "hex": "#E1C7B7" }
+      ];
+  </script>
+
   <style type="text/css">
     body {
       display: grid;
@@ -36,6 +50,16 @@
 
   // Find the number of rows and columns in the grid
   const dimensions = getGridDimensions();
+
+  // Fill in a random color in a random cell
+  for (let i = 0; i < dimensions.rows; i++) {
+    for (let j = 0; j < dimensions.columns; j++) {
+      const div = document.createElement('div');
+      div.className = 'grid-item';
+      div.style.backgroundColor = colorsLight[Math.floor(Math.random() * colorsLight.length)].hex;
+      document.body.appendChild(div);
+    }
+  }
 
   // Define the logo placement
   const maxX = Math.max(...logo.map(coord => coord.x));
@@ -87,7 +111,7 @@
     // Get a random item
     const randomIndex = Math.floor(Math.random() * items.length);
     const randomItem = items[randomIndex];
-    randomItem.style.display = 'none';
+    randomItem.style.backgroundColor = colorsLight[Math.floor(Math.random() * colorsLight.length)].hex;
     // Wait for 100ms before calling the function again
     setTimeout(() => {
       animateElements();
