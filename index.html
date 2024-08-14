@@ -19,6 +19,18 @@
         { "name": "Dusty Rose", "hex": "#D9A99B" },
         { "name": "Pale Terracotta", "hex": "#E1C7B7" }
       ];
+    const colorsDark =
+      [
+        { "name": "Dark Sandy Brown", "hex": "#A47551" },
+        { "name": "Burnt Clay", "hex": "#6F4E37" },
+        { "name": "Dark Olive", "hex": "#4E4B2E" },
+        { "name": "Deep Taupe", "hex": "#5C4F3B" },
+        { "name": "Forest Green", "hex": "#3B4A3E" },
+        { "name": "Dark Stone", "hex": "#5A4A32" },
+        { "name": "Deep Dusty Rose", "hex": "#6E3A3A" },
+        { "name": "Dark Terracotta", "hex": "#7F4F44" }
+      ];
+
   </script>
 
   <style type="text/css">
@@ -71,6 +83,7 @@
   logo.forEach(coord => {
     const div = document.createElement('div');
     div.className = 'grid-item logo-item';
+    div.style.backgroundColor = colorsDark[Math.floor(Math.random() * colorsLight.length)].hex;
     div.style.gridRow = `${origoY + coord.y} / ${origoY + coord.y + 1}`;
     div.style.gridColumn = `${origoX + coord.x} / ${origoX + coord.x + 1}`;
     grid.appendChild(div);
@@ -104,18 +117,18 @@
   // Wait for ten secons before startging the animation
   setTimeout(() => {
     animateElements();
-  }, 2000);
+  }, 1000);
 
   function animateElements() {
     const items = document.querySelectorAll('.logo-item');
     // Get a random item
     const randomIndex = Math.floor(Math.random() * items.length);
     const randomItem = items[randomIndex];
-    randomItem.style.backgroundColor = colorsLight[Math.floor(Math.random() * colorsLight.length)].hex;
-    // Wait for 100ms before calling the function again
+    randomItem.style.backgroundColor = 'black';
+    // Wait for 50 before calling the function again
     setTimeout(() => {
       animateElements();
-    }, 100);
+    }, 50);
   }
 
   function getGridDimensions() {
