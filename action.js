@@ -179,7 +179,12 @@ Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 Composite.add(engine.world, [...staticBodies, ...bodies]);
 Composite.add(engine.world, envelopeBodies);
 
-Render.run(render);
+// REnder after three seconds if not on localhost
+if (window.location.hostname !== "localhost") {
+  setTimeout(Render.run(render), 2500);
+} else {
+  Render.run(render);
+}
 
 var runner = Runner.create();
 Runner.run(runner, engine);
