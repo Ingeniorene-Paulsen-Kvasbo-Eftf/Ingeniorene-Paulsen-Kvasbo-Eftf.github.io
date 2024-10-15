@@ -58,10 +58,10 @@ const origoX = Math.floor(dimensions.columns / 2) - Math.floor(maxX / 2);
 const origoY = Math.floor((dimensions.rows - maxY) / 2);
 
 // Define the envelope placement
-const envelopeMaxX = Math.max(...envelope.map((coord) => coord.x));
-const envelopeMaxY = Math.max(...envelope.map((coord) => coord.y));
-const envelopeStartX = (window.innerWidth / 2) - Math.floor(envelopeMaxX) * 2.5;
-const envelopeStartY = (window.innerHeight) - 100;
+const envelopeMaxX = Math.max(...email.map((coord) => coord.x));
+const envelopeMaxY = Math.max(...email.map((coord) => coord.y));
+const envelopeStartX = window.innerWidth / 2 - Math.floor(envelopeMaxX) * 2.5;
+const envelopeStartY = window.innerHeight - 100;
 
 const grid = document.body;
 
@@ -100,7 +100,7 @@ logo.forEach((coord) => {
   const staticBox = Bodies.rectangle(gridX, gridY, gridSize, gridSize, {
     isStatic: true,
     collisionFilter: {
-      mask: 0 // This will make the circle ignore all collisions
+      mask: 0, // This will make the circle ignore all collisions
     },
     render: {
       fillStyle: "#EEE",
@@ -115,33 +115,43 @@ logo.forEach((coord) => {
 
 const envelopeBodies = [];
 
-
-envelope.forEach((coord) => {
-
-  const staticBox = Bodies.rectangle(envelopeStartX + (coord.x * gridSize), envelopeStartY + (coord.y * gridSize), gridSize, gridSize, {
-    isStatic: true,
-    render: {
-      fillStyle: "#F00",
-      strokeStyle: "#F00",
-      lineWidth: 1,
-    },
-  });
+email.forEach((coord) => {
+  const staticBox = Bodies.rectangle(
+    envelopeStartX + coord.x * gridSize,
+    envelopeStartY + coord.y * gridSize,
+    gridSize,
+    gridSize,
+    {
+      isStatic: true,
+      render: {
+        fillStyle: "#F00",
+        strokeStyle: "#F00",
+        lineWidth: 1,
+      },
+    }
+  );
   envelopeBodies.push(staticBox);
 });
 
 // Create a clickable body
-const clickableBody = Bodies.rectangle(window.innerWidth / 2, window.innerHeight - 75, 50, 50, {
-  isStatic: true, // Make it static so it doesn't move
-  collisionFilter: {
-    mask: 0 // This will make the circle ignore all collisions
-  },
-  restitution: 0.8,
-  render: {
-      fillStyle: '#ff000000', // Set color for visibility
-      strokeStyle: '#ff000000',
-      lineWidth: 2
+const clickableBody = Bodies.rectangle(
+  window.innerWidth / 2,
+  window.innerHeight - 75,
+  50,
+  50,
+  {
+    isStatic: true, // Make it static so it doesn't move
+    collisionFilter: {
+      mask: 0, // This will make the circle ignore all collisions
+    },
+    restitution: 0.8,
+    render: {
+      fillStyle: "#ff000000", // Set color for visibility
+      strokeStyle: "#ff000000",
+      lineWidth: 2,
+    },
   }
-});
+);
 
 Composite.add(engine.world, clickableBody);
 
@@ -179,14 +189,15 @@ Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 Composite.add(engine.world, [...staticBodies, ...bodies]);
 Composite.add(engine.world, envelopeBodies);
 
-
 Render.run(render);
 
 var runner = Runner.create();
 
 const timeOut = 2000;
 
-setTimeout(() => {Runner.run(runner, engine)}, timeOut);
+setTimeout(() => {
+  Runner.run(runner, engine);
+}, timeOut);
 
 // Create mouse control
 const mouse = Mouse.create(render.canvas);
@@ -226,7 +237,6 @@ Events.on(mouseConstraint, "mousedown", function (event) {
     window.location.href = "mailto:post@eftf.no";
   }
 });
-
 
 function getGridDimensions() {
   // Assuming each grid cell is 10px by 10px
