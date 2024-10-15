@@ -262,8 +262,10 @@ window.addEventListener("deviceorientation", function (event) {
   const gravityY = beta / 180; // Maps beta (-180, 180) to gravity (-1, 1)
 
   // Set gravity in the Matter.js engine
-  engine.world.gravity.x = gravityX;
-  engine.world.gravity.y = gravityY;
+  if (gravityX != 0 && gravityY != 0) {
+    engine.world.gravity.x = gravityX;
+    engine.world.gravity.y = gravityY;
+  }
 
   console.log(`Gravity X: ${gravityX}, Gravity Y: ${gravityY}`);
 });
