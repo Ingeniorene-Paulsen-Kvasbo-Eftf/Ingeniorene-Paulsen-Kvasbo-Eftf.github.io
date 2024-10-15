@@ -133,27 +133,6 @@ email.forEach((coord) => {
   envelopeBodies.push(staticBox);
 });
 
-// Create a clickable body
-const clickableBody = Bodies.rectangle(
-  window.innerWidth / 2,
-  window.innerHeight - 75,
-  50,
-  50,
-  {
-    isStatic: true, // Make it static so it doesn't move
-    collisionFilter: {
-      mask: 0, // This will make the circle ignore all collisions
-    },
-    restitution: 0.8,
-    render: {
-      fillStyle: "#ff000000", // Set color for visibility
-      strokeStyle: "#ff000000",
-      lineWidth: 2,
-    },
-  }
-);
-
-Composite.add(engine.world, clickableBody);
 
 // Add static boundary walls (left, right, top, bottom)
 const ground = Bodies.rectangle(
@@ -227,15 +206,6 @@ Events.on(mouseConstraint, "mousemove", function (event) {
       });
     }
   });
-});
-
-// Detect clicks on the contact icon
-Events.on(mouseConstraint, "mousedown", function (event) {
-  const mousePosition = event.mouse.position;
-  // Check if the body contains the mouse position
-  if (Matter.Bounds.contains(clickableBody.bounds, mousePosition)) {
-    window.location.href = "mailto:post@eftf.no";
-  }
 });
 
 function getGridDimensions() {
