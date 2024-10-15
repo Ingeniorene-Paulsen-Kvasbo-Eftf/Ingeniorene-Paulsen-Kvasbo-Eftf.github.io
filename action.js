@@ -103,8 +103,8 @@ logo.forEach((coord) => {
       mask: 0 // This will make the circle ignore all collisions
     },
     render: {
-      fillStyle: "#DDD",
-      strokeStyle: "#DDD",
+      fillStyle: "#EEE",
+      strokeStyle: "#EEE",
       lineWidth: 1,
     },
   });
@@ -179,15 +179,14 @@ Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 Composite.add(engine.world, [...staticBodies, ...bodies]);
 Composite.add(engine.world, envelopeBodies);
 
-// REnder after three seconds if not on localhost
-if (window.location.hostname !== "localhost") {
-  setTimeout(Render.run(render), 2500);
-} else {
-  Render.run(render);
-}
+
+Render.run(render);
 
 var runner = Runner.create();
-Runner.run(runner, engine);
+
+const timeOut = 2000;
+
+setTimeout(() => {Runner.run(runner, engine)}, timeOut);
 
 // Create mouse control
 const mouse = Mouse.create(render.canvas);
