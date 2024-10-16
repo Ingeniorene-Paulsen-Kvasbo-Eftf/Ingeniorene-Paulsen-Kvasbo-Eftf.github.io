@@ -83,7 +83,7 @@ logo.forEach((coord) => {
   const gridY = y * gridSize;
 
   // Create a random grayscale color
-  const color = Math.floor(Math.random() * 4);
+  const color = Math.floor(Math.random() * 3);
   const colorHex = `#${color.toString()}${color.toString()}${color.toString()}`;
 
   // Add the falling bodies
@@ -118,15 +118,16 @@ logo.forEach((coord) => {
 });
 
 const envelopeBodies = [];
+const staticEnvelopeBodies = [];
 
 email.forEach((coord) => {
-  const staticBox = Bodies.rectangle(
+  const box = Bodies.rectangle(
     envelopeStartX + coord.x * gridSize,
     envelopeStartY + coord.y * gridSize,
     gridSize,
     gridSize,
     {
-      isStatic: true,
+      isStatic: false,
       render: {
         fillStyle: "#F00",
         strokeStyle: "#F00",
@@ -134,9 +135,26 @@ email.forEach((coord) => {
       },
     }
   );
-  envelopeBodies.push(staticBox);
+  const staticBox = Bodies.rectangle(
+    envelopeStartX + coord.x * gridSize,
+    envelopeStartY + coord.y * gridSize,
+    gridSize,
+    gridSize,
+    {
+      collisionFilter: {
+        mask: 0, // This will make the circle ignore all collisions
+      },
+      isStatic: true,
+      render: {
+        fillStyle: "#FFDEDE",
+        strokeStyle: "#FFDEDE",
+        lineWidth: 1,
+      },
+    }
+  );
+  envelopeBodies.push(box);
+  staticEnvelopeBodies.push(staticBox);
 });
-
 
 // Add static boundary walls (left, right, top, bottom)
 const ground = Bodies.rectangle(
@@ -170,13 +188,15 @@ const ceiling = Bodies.rectangle(
 
 Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 Composite.add(engine.world, [...staticBodies, ...bodies]);
+Composite.add(engine.world, staticEnvelopeBodies);
 Composite.add(engine.world, envelopeBodies);
+
 
 Render.run(render);
 
 var runner = Runner.create();
 
-const timeOut = 2000;
+const timeOut = 10;
 
 setTimeout(() => {
   Runner.run(runner, engine);
@@ -195,11 +215,13 @@ const mouseConstraint = MouseConstraint.create(engine, {
 });
 Composite.add(engine.world, mouseConstraint);
 
-// Apply force to the particle on mouse click
+const toApplyForce = bodies.concat(envelopeBodies);
+
+// Apply force to the particle on mouse move
 Events.on(mouseConstraint, "mousemove", function (event) {
   const mousePosition = event.mouse.position;
 
-  bodies.forEach((body) => {
+  toApplyForce.forEach((body) => {
     // Check if the body contains the mouse position
     if (Matter.Bounds.contains(body.bounds, mousePosition)) {
       // Apply a force to the body when clicked
@@ -225,21 +247,3 @@ function getGridDimensions() {
 
   return { rows, columns };
 }
-
-// Listen to device orientation and adjust gravity
-window.addEventListener("deviceorientation", function (event) {
-  const beta = event.beta; // -180 to 180 (front-back tilt)
-  const gamma = event.gamma; // -90 to 90 (left-right tilt)
-
-  // Normalize gravity values
-  const gravityX = gamma / 90; // Maps gamma (-90, 90) to gravity (-1, 1)
-  const gravityY = beta / 180; // Maps beta (-180, 180) to gravity (-1, 1)
-
-  // Set gravity in the Matter.js engine
-  if (gravityX != 0 && gravityY != 0) {
-    engine.world.gravity.x = gravityX;
-    engine.world.gravity.y = gravityY;
-  }
-
-  console.log(`Gravity X: ${gravityX}, Gravity Y: ${gravityY}`);
-});
