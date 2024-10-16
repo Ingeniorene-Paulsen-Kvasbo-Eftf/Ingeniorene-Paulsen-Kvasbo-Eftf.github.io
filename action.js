@@ -227,12 +227,11 @@ const toApplyForce = bodies.concat(envelopeBodies);
 Events.on(mouseConstraint, "mousemove", function (event) {
   const mousePosition = event.mouse.position;
 
-  // Stop the countdown to falling
-  clearTimeout(toFall);
-
   toApplyForce.forEach((body) => {
     // Check if the body contains the mouse position
     if (Matter.Bounds.contains(body.bounds, mousePosition)) {
+      // Stop the countdown to falling
+      clearTimeout(toFall);
       // Apply a force to the body when clicked
       const forceMagnitude = 0.02 * body.mass;
       Matter.Body.applyForce(body, body.position, {
