@@ -11,6 +11,10 @@ const Engine = Matter.Engine,
 
 const engine = Engine.create();
 
+// Setup engine physics etc.
+engine.world.gravity.x = 0;
+engine.world.gravity.y = 0;
+
 // create a renderer
 const render = Render.create({
   element: document.body,
