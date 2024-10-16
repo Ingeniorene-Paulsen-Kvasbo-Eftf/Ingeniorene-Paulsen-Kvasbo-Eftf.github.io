@@ -128,6 +128,10 @@ email.forEach((coord) => {
     gridSize,
     {
       isStatic: false,
+      density: Math.random() * 1,
+      frictionAir: Math.random() * 0.01,
+      restitution: 1,
+      angularVelocity: 0.1,
       render: {
         fillStyle: "#F00",
         strokeStyle: "#F00",
@@ -187,8 +191,10 @@ const ceiling = Bodies.rectangle(
 );
 
 Composite.add(engine.world, [ground, leftWall, rightWall, ceiling]);
-Composite.add(engine.world, [...staticBodies, ...bodies]);
+
 Composite.add(engine.world, staticEnvelopeBodies);
+Composite.add(engine.world, staticBodies);
+Composite.add(engine.world, bodies);
 Composite.add(engine.world, envelopeBodies);
 
 
@@ -221,6 +227,9 @@ const toApplyForce = bodies.concat(envelopeBodies);
 Events.on(mouseConstraint, "mousemove", function (event) {
   const mousePosition = event.mouse.position;
 
+  // Stop the countdown to falling
+  clearTimeout(toFall);
+
   toApplyForce.forEach((body) => {
     // Check if the body contains the mouse position
     if (Matter.Bounds.contains(body.bounds, mousePosition)) {
@@ -247,3 +256,8 @@ function getGridDimensions() {
 
   return { rows, columns };
 }
+
+// Start falling after 15 seconds
+let toFall = setTimeout(() => {
+  engine.world.gravity.y = 1;
+}, 15000);
